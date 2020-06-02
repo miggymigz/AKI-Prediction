@@ -1,6 +1,11 @@
 # AKI-Prediction
 Deep Learning Models for AKI Prediction on MIMIC-III and eICU database
 
+if you use this code, please cite the following paper:
+```
+Wang Y, Bao J P, Du J Q, et al. Precisely Predicting Acute Kidney Injury with Convolutional Neural Network Based on Electronic Health Record Data. arXiv preprint arXiv:2005.13171, 2020.
+```
+
 ## Data Access
 The propsed models were tested on [MIMIC-III database](https://mimic.physionet.org/) and [eICU database](https://eicu-crd.mit.edu/). This study uses blood gas features and fundamental demographics to make the input vector. The data sets used for the proposed models can be found in [data](https://github.com/Sophiaaaaaa/AKI-Prediction/tree/master/data) folder.
 
