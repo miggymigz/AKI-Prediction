@@ -1,4 +1,4 @@
-from keras.backend.tensorflow_backend import set_session
+# from keras.backend.tensorflow_backend import set_session
 from keras.callbacks import ReduceLROnPlateau, EarlyStopping
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import StratifiedKFold
@@ -58,8 +58,14 @@ class Train():
         kFold = StratifiedKFold(n_splits=5, shuffle=True, random_state=7)
         for train, test in kFold.split(x, y):
             print('This is the', i, 'fold')
-            early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=30,
-                                       verbose=0, mode='min', baseline=None, restore_best_weights=False)
+            early_stop = EarlyStopping(
+                monitor='val_loss',
+                min_delta=0,
+                patience=30,
+                verbose=0,
+                mode='min',
+                baseline=None,
+            )
             reduce_lr = ReduceLROnPlateau(
                 monitor='val_loss', factor=0.1, patience=10, mode='min', min_delta=0.000001)
             m = set_model(self.data_base, self.model_name,
@@ -105,7 +111,7 @@ class Train():
         sys.stdout = Logger(str(self.data_base)+"_train_record_" +
                             str(self.model_name)+str(self.nb_layer)+".txt")
         cvscores = []
-        start = time.clock()
+        start = time.time()
 
         data = load_data(self.path)
         pat_num = data["arr_0"]
@@ -117,7 +123,7 @@ class Train():
 
         self.cross_validation(data0, label, pat_num)
         # print ('the training is ok!')
-        end = time.clock()
+        end = time.time()
         print('Time cost is:', end-start)
 
         print('finished!')
