@@ -44,7 +44,7 @@ class MimicCnn(tf.keras.Model):
         w = self.attn(x)
         x = x * w
 
-        x = tf.reshape(x, (batch_size, n_features, 1))
+        x = x[:, :, tf.newaxis]
         x = self.conv1d(x)
         x = x[:, :, :, tf.newaxis]
 
