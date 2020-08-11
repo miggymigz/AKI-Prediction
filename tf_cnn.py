@@ -14,6 +14,7 @@ class MimicCnn(tf.keras.Model):
         self.n_features = n_features
 
         self.conv1d = tf.keras.layers.Conv1D(16, 3, activation='relu')
+        self.attn = tf.keras.layers.Dense(16, activation='softmax')
         self.conv2ds = list(self.init_conv2ds(n_layers=n_layers))
         self.proj1 = tf.keras.layers.Dense(64, activation='relu')
         self.drop1 = tf.keras.layers.Dropout(0.5)
@@ -35,10 +36,15 @@ class MimicCnn(tf.keras.Model):
 
     def call(self, x, training=False):
         # input shape sanity check
-        # model expects an input of shape: (batch_size, n_features, 1)
-        batch_size, n_features, _ = shape_list(x)
+        # model expects an input of shape: (batch_size, n_features)
+        batch_size, n_features = shape_list(x)
         assert n_features == self.n_features
 
+        # get weights for embedding-level attention
+        w = self.attn(x)
+        x = x * w
+
+        x = tf.reshape(x, (batch_size, n_features, 1))
         x = self.conv1d(x)
         x = x[:, :, :, tf.newaxis]
 
@@ -52,4 +58,4 @@ class MimicCnn(tf.keras.Model):
         x = self.proj2(x)
         x = self.proj3(x)
 
-        return x
+        return x, w
